@@ -28,8 +28,8 @@
 
 .whatsapp-container {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 2rem;
+  right: 2rem;
 }
 
 .form-header {
@@ -52,6 +52,8 @@
   transition: opacity 0.5s, transform 0.5s;
   animation: aparecer 1s forwards;
   margin-left: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
 }
 
 @keyframes aparecer {

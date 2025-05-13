@@ -13,17 +13,17 @@
     <div id="settings">
       <form id="settings-form">
         <div>
-          <label for="primary-color">Cor Primária: </label>
+          <label for="primary-color">Primary color: </label>
           <input id="primary-color" type="color" value="#075f55" />
         </div>
 
         <div>
-          <label for="title">Título: </label>
+          <label for="title">Title: </label>
           <input type="text" id="title" value="Fale Conosco" maxlength="30" />
         </div>
 
         <div>
-          <label for="wp-number">Número destino: </label>
+          <label for="wp-number">To Number: </label>
           <input
             type="number"
             id="wp-number"
@@ -34,7 +34,7 @@
         </div>
 
         <div>
-          <label for="first-message">Primeira msg: </label>
+          <label for="first-message">First message: </label>
           <p>
             Acesse nome, telefone e e-mail usando: {{name}}, {{phone}} e
             {{email}}
@@ -53,11 +53,21 @@ Olá, meu nome é {{name}} e gostaria de informações!</textarea
           />
         </div>
 
+        <div>
+          <label for="cta">Call-to-action:</label>
+          <input type="text" id="cta" value="Conversar" maxlength="20" />
+        </div>
+
         <button id="reset-styles" class="settings-buttons">
           Reset Defaults
         </button>
-        <button class="settings-buttons">Generate Code</button>
+        <button id="generate-code" class="settings-buttons">
+          Generate Code
+        </button>
       </form>
+      <div class="code-block none">
+        <pre><code id="widget-code"></code></pre>
+      </div>
     </div>
 
     <div class="whatsapp-container">
@@ -109,7 +119,7 @@ Olá, meu nome é {{name}} e gostaria de informações!</textarea
       </button>
     </div>
 
-    <script src="./script.js"></script>
+    <script type="module" src="./script/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/source-map@0.7.3/dist/source-map.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/terser/dist/bundle.min.js"></script>
   </body>

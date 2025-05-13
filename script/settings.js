@@ -2,98 +2,26 @@ let whatsAppPhoneNumber = '5516999999999'
 let whatsAppFirstMessage = 'Olá, meu nome é {{name}} e gostaria de informações!'
 let webhookUrl =
   'https://script.google.com/macros/s/AKfycby1E9BQCd5Qh-luovTfTsJk7_zYimoRNHPj4ASW61uyzSMYmbOWywW7j0frPXso1j96/exec'
-
-function replaceFirstMsgVars(name, email, phone, msg) {
-  return msg
-    .replace('{{name}}', name)
-    .replace('{{email}}', email)
-    .replace('{{phone}}', phone)
-}
-
-function toggleShowForm() {
-  const formContainer = document.getElementById('form-container')
-  formContainer.classList.toggle('none')
-}
-
-async function saveDataOnSpreadsheet(name, email, phone) {
-  try {
-    const res = await fetch(webhookUrl, {
-      method: 'POST',
-      redirect: 'follow',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8',
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        phone,
-      }),
-    })
-    const json = await res.json()
-    return json
-  } catch (error) {
-    console.error('Error on fetching webhook URL.', error)
-    return null
-  }
-}
-
-async function formSubmit(e) {
-  e.preventDefault()
-
-  const formButton = document.getElementById('form-button')
-  formButton.setAttribute('disabled', true)
-  formButton.innerText = 'Enviando...'
-
-  const form = document.getElementById('whatsapp-form')
-  const name = form.name.value
-  const email = form.email.value
-  const phone = form.phone.value
-
-  await saveDataOnSpreadsheet(name, email, phone)
-
-  formButton.removeAttribute('disabled')
-  formButton.innerText = 'Conversar'
-  form.reset()
-
-  toggleShowForm()
-
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsAppPhoneNumber}&text=${replaceFirstMsgVars(
-    name,
-    email,
-    phone,
-    whatsAppFirstMessage
-  )}`
-
-  window.open(whatsappUrl, '_blank')
-}
-
-const style = document.createElement('style')
-style.textContent = this.cssContent
-document.head.appendChild(style)
-
-const whatsappButton = document.getElementsByClassName('whatsapp-button')[0]
-const closeXButton = document.getElementsByClassName('close-icon')[0]
-const form = document.getElementById('whatsapp-form')
-
-form.addEventListener('submit', (e) => formSubmit(e, this))
-
-whatsappButton.addEventListener('click', toggleShowForm)
-closeXButton.addEventListener('click', toggleShowForm)
+let callToActionText = 'Conversar'
+let title = 'Fale Conosco'
+let primaryColor = '#075f55'
 
 // Change primary color
 const primaryColorInput = document.getElementById('primary-color')
 const styleSheet = document.styleSheets[0]
 primaryColorInput.addEventListener('input', (e) => {
-  const color = e.target.value
-  styleSheet.cssRules[1].style.setProperty('--primary-color', color)
+  const newColor = e.target.value
+  styleSheet.cssRules[1].style.setProperty('--primary-color', newColor)
+  primaryColor = newColor
 })
 
 // Change form title
 const formTitleInput = document.getElementById('title')
 const formTitle = document.querySelector('.form-header h4')
 formTitleInput.addEventListener('input', (e) => {
-  const title = e.target.value
-  formTitle.innerText = title
+  const newTitle = e.target.value
+  formTitle.innerText = newTitle
+  title = newTitle
 })
 
 // Change form (To) Number
@@ -117,8 +45,19 @@ webhookUrlInput.addEventListener('input', (e) => {
   webhookUrl = url
 })
 
+// Change Call to Action Text
+const ctaInput = document.getElementById('cta')
+const submitButton = document.getElementById('form-button')
+ctaInput.addEventListener('input', (e) => {
+  const ctaText = e.target.value
+  callToActionText = ctaText
+  submitButton.innerText = ctaText
+})
+
 // Reset default styes feature
-function resetWpButtonStyles() {
+function resetWpButtonStyles(e) {
+  e.preventDefault()
+  e.stopPropagation()
   // Primary color
   const primaryColorDefault = '#075f55'
   styleSheet.cssRules[1].style.setProperty(
@@ -148,8 +87,67 @@ function resetWpButtonStyles() {
     'https://script.google.com/macros/s/AKfycby1E9BQCd5Qh-luovTfTsJk7_zYimoRNHPj4ASW61uyzSMYmbOWywW7j0frPXso1j96/exec'
   webhookUrlInput.value = webhookUrlDefault
   webhookUrl = webhookUrlDefault
+
+  // Call to Action Text
+  const ctaTextDefault = 'Conversar'
+  ctaInput.value = ctaTextDefault
+  submitButton.innerText = ctaTextDefault
+  callToActionText = ctaTextDefault
 }
 
 document
   .getElementById('reset-styles')
   .addEventListener('click', resetWpButtonStyles)
+
+async function generateWidgetCode(e) {
+  e.preventDefault()
+  e.stopPropagation()
+
+  const htmlContent =
+    document.getElementsByClassName('whatsapp-container')[0].outerHTML
+
+  let cssContent = ''
+  for (const sheet of document.styleSheets) {
+    try {
+      for (const rule of sheet.cssRules) {
+        cssContent += `${rule.cssText}\n`
+      }
+    } catch (e) {
+      // Some stylesheets (like from other domains) may be restricted due to CORS
+      console.warn('Cannot access stylesheet:', sheet.href, e)
+    }
+  }
+
+  const code = `
+    <script src="https://pub-850de9adf9bd40ce951ccd70ed288808.r2.dev/wormhole/WhatsAppButton.js"></script>
+    <script>
+      const whatsAppButton = new WhatsAppButton(
+        '${whatsAppPhoneNumber}',
+        '${whatsAppFirstMessage}',
+        '${webhookUrl}',
+        '${callToActionText}',
+        '${primaryColor}',
+        '${title}',
+        '${htmlContent}',
+        '${cssContent}'
+      )
+      whatsAppButton.init()
+    </script>
+  `
+
+  document.getElementById('widget-code').textContent = code
+  document.getElementsByClassName('code-block')[0].classList.remove('none')
+}
+
+document
+  .getElementById('generate-code')
+  .addEventListener('click', generateWidgetCode)
+
+export {
+  whatsAppPhoneNumber,
+  whatsAppFirstMessage,
+  webhookUrl,
+  callToActionText,
+  title,
+  primaryColor,
+}

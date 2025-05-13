@@ -33,6 +33,7 @@ body {
 input#title,
 input#webhook-url,
 input#wp-number,
+input#cta,
 textarea {
   width: 100%;
   padding: 0.6rem 0.8rem;
@@ -46,6 +47,7 @@ textarea {
 input#title:focus,
 input#webhook-url:focus,
 input#wp-number:focus,
+input#cta:focus,
 textarea#first-message:focus {
   border-color: #075f55;
   outline: none;
@@ -93,4 +95,21 @@ button#reset-styles {
 
 button#reset-styles:hover {
   background-color: #bbb;
+}
+
+.code-block {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: Consolas, Monaco, 'Courier New', monospace;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin: 1.5rem 0 0;
+}
+
+.code-block code {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  white-space: pre;
 }
