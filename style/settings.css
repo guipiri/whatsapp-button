@@ -1,0 +1,96 @@
+/* styles.css */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+#settings {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+#settings-form > div {
+  margin-bottom: 1.5rem;
+}
+
+#settings label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+input#title,
+input#webhook-url,
+input#wp-number,
+textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+input#title:focus,
+input#webhook-url:focus,
+input#wp-number:focus,
+textarea#first-message:focus {
+  border-color: #075f55;
+  outline: none;
+}
+
+input#primary-color {
+  border: none;
+  width: 60px;
+  height: 40px;
+  padding: 0;
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+p {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.settings-buttons {
+  background-color: #075f55;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.settings-buttons:hover {
+  background-color: #05473f;
+}
+
+button#reset-styles {
+  background-color: #ccc;
+  color: #333;
+}
+
+button#reset-styles:hover {
+  background-color: #bbb;
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="WhatsApp Button Form" />
+    <meta name="keywords" content="WhatsApp, Button, Form" />
+    <link rel="stylesheet" href="./style/wp-button.css" />
+    <link rel="stylesheet" href="./style/settings.css" />
+    <title>WhatsApp Button Form</title>
+  </head>
+  <body>
+    <div id="settings">
+      <form id="settings-form">
+        <div>
+          <label for="primary-color">Cor Primária: </label>
+          <input id="primary-color" type="color" value="#075f55" />
+        </div>
+
+        <div>
+          <label for="title">Título: </label>
+          <input type="text" id="title" value="Fale Conosco" maxlength="30" />
+        </div>
+
+        <div>
+          <label for="wp-number">Número destino: </label>
+          <input
+            type="number"
+            id="wp-number"
+            value="5516999999999"
+            pattern="[0-9]{13}"
+            placeholder="Ex: 5511991627572"
+          />
+        </div>
+
+        <div>
+          <label for="first-message">Primeira msg: </label>
+          <p>
+            Acesse nome, telefone e e-mail usando: {{name}}, {{phone}} e
+            {{email}}
+          </p>
+          <textarea type="text" id="first-message" rows="4" cols="50">
+Olá, meu nome é {{name}} e gostaria de informações!</textarea
+          >
+        </div>
+
+        <div>
+          <label for="webhook-url">Webhook URL: </label>
+          <input
+            type="url"
+            id="webhook-url"
+            value="https://script.google.com/macros/s/AKfycby1E9BQCd5Qh-luovTfTsJk7_zYimoRNHPj4ASW61uyzSMYmbOWywW7j0frPXso1j96/exec"
+          />
+        </div>
+
+        <button id="reset-styles" class="settings-buttons">
+          Reset Defaults
+        </button>
+        <button class="settings-buttons">Generate Code</button>
+      </form>
+    </div>
+
+    <div class="whatsapp-container">
+      <div id="form-container" class="">
+        <header class="form-header">
+          <h4>Fale Conosco</h4>
+          <div class="close-icon"></div>
+        </header>
+        <div class="form">
+          <form id="whatsapp-form">
+            <div class="form-field">
+              <input
+                placeholder="Nome"
+                type="text"
+                id="name"
+                name="name"
+                required
+              />
+            </div>
+            <div class="form-field">
+              <input
+                placeholder="E-mail"
+                type="email"
+                id="email"
+                name="email"
+                required
+              />
+            </div>
+            <div class="form-field">
+              <input
+                placeholder="Número do WhatsApp"
+                type="number"
+                id="phone"
+                name="phone"
+                required
+              />
+            </div>
+            <button id="form-button" type="submit">Conversar</button>
+          </form>
+        </div>
+      </div>
+      <button class="whatsapp-button">
+        <img
+          src="https://pub-fab99594a03b41c38db0d04b26923694.r2.dev/wp-bt.svg"
+          alt="WhatsApp Icon"
+          width="60"
+          height="60"
+        />
+      </button>
+    </div>
+
+    <script src="./script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/source-map@0.7.3/dist/source-map.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/terser/dist/bundle.min.js"></script>
+  </body>
+</html>

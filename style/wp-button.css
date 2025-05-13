@@ -1,0 +1,133 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Matter', sans-serif;
+  font-size: 16px;
+}
+
+:root {
+  --primary-color: #075f55;
+  --secondary-color: #25d366;
+}
+
+.whatsapp-button {
+  text-decoration: none;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-top: 1rem;
+}
+
+.whatsapp-button:hover {
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+.whatsapp-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.form-header {
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 1rem 1rem 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.none {
+  display: none;
+}
+
+#form-container {
+  opacity: 0; /* Inicia invisível */
+  transform: translateY(-20px); /* Sai um pouco para cima */
+  transition: opacity 0.5s, transform 0.5s;
+  animation: aparecer 1s forwards;
+  margin-left: 20px;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0; /* Início invisível */
+    transform: translateY(-20px); /* Sai um pouco para cima */
+  }
+  to {
+    opacity: 1; /* Totalmente visível */
+    transform: translateY(0); /* Posição final */
+  }
+}
+
+.form {
+  padding: 1.5rem;
+  background-image: url(https://pub-fab99594a03b41c38db0d04b26923694.r2.dev/wp-bg.jpeg);
+  border-radius: 0 0 1rem 1rem;
+}
+
+.form-field input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  border: none;
+  margin-bottom: 1.5rem;
+  outline: none;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+#form-button {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  display: block;
+  width: 100%;
+}
+
+#form-button:hover {
+  background-color: #0a7d73;
+}
+
+.close-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.close-icon::before,
+.close-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 24px;
+  background-color: #ffffff;
+  transform-origin: center;
+}
+
+.close-icon::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close-icon::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
