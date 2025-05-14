@@ -2,7 +2,7 @@ import {
   webhookUrl,
   whatsAppFirstMessage,
   whatsAppPhoneNumber,
-  callToActionText
+  callToActionText,
 } from './settings.js'
 
 function replaceFirstMsgVars(name, email, phone, msg) {
@@ -17,7 +17,7 @@ function toggleShowForm() {
   formContainer.classList.toggle('none')
 }
 
-async function saveDataOnSpreadsheet(name, email, phone) {
+async function fetchWebhookUrl(name, email, phone) {
   try {
     const res = await fetch(webhookUrl, {
       method: 'POST',
@@ -49,7 +49,7 @@ async function formSubmit(e) {
   const email = form.email.value
   const phone = form.phone.value
 
-  await saveDataOnSpreadsheet(name, email, phone)
+  await fetchWebhookUrl(name, email, phone)
 
   formButton.removeAttribute('disabled')
   formButton.innerText = callToActionText

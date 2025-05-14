@@ -11,6 +11,11 @@
   --secondary-color: #25d366;
 }
 
+body {
+  background-color: transparent;
+  height: 100vh;
+}
+
 .whatsapp-button {
   text-decoration: none;
   border: none;
@@ -133,3 +138,4 @@ input[type='number']::-webkit-outer-spin-button {
 .close-icon::after {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
+

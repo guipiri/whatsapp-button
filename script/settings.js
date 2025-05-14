@@ -1,5 +1,5 @@
 let whatsAppPhoneNumber = '5516999999999'
-let whatsAppFirstMessage = 'Olá, meu nome é {{name}} e gostaria de informações!'
+let whatsAppFirstMessage = 'Olá, meu nome é {name} e gostaria de informações!'
 let webhookUrl =
   'https://script.google.com/macros/s/AKfycby1E9BQCd5Qh-luovTfTsJk7_zYimoRNHPj4ASW61uyzSMYmbOWywW7j0frPXso1j96/exec'
 let callToActionText = 'Conversar'
@@ -78,7 +78,7 @@ function resetWpButtonStyles(e) {
 
   // First message
   const firstMessageDefault =
-    'Olá, meu nome é {{name}} e gostaria de informações!'
+    'Olá, meu nome é {name} e gostaria de informações!'
   firstMessage.value = firstMessageDefault
   whatsAppFirstMessage = firstMessageDefault
 
@@ -107,30 +107,37 @@ async function generateWidgetCode(e) {
     document.getElementsByClassName('whatsapp-container')[0].outerHTML
 
   let cssContent = ''
-  for (const sheet of document.styleSheets) {
-    try {
-      for (const rule of sheet.cssRules) {
-        cssContent += `${rule.cssText}\n`
-      }
-    } catch (e) {
-      // Some stylesheets (like from other domains) may be restricted due to CORS
-      console.warn('Cannot access stylesheet:', sheet.href, e)
+  try {
+    for (const rule of document.styleSheets[0].cssRules) {
+      cssContent += `${rule.cssText}\n`
     }
+  } catch (e) {
+    // Some stylesheets (like from other domains) may be restricted due to CORS
+    console.warn('Cannot access stylesheet:', sheet.href, e)
   }
 
   const code = `
-    <script src="https://pub-850de9adf9bd40ce951ccd70ed288808.r2.dev/wormhole/WhatsAppButton.js"></script>
-    <script>
-      const whatsAppButton = new WhatsAppButton(
-        '${whatsAppPhoneNumber}',
-        '${whatsAppFirstMessage}',
-        '${webhookUrl}',
-        '${callToActionText}',
-        '${primaryColor}',
-        '${title}',
-        '${htmlContent.replaceAll('\n', '')}',
-        '${cssContent.replaceAll('\n', '')}',
-      )
+    <script type='text/javascript' src="https://pub-850de9adf9bd40ce951ccd70ed288808.r2.dev/wormhole/WhatsAppButton.js"></script>
+    <script type='text/javascript'>
+      var cssContent1 = '${cssContent
+        .replaceAll('\n', '')
+        .substring(0, cssContent.replaceAll('\n', '').length / 2)}'
+      var cssContent2 = '${cssContent
+        .replaceAll('\n', '')
+        .substring(
+          cssContent.replaceAll('\n', '').length / 2,
+          cssContent.replaceAll('\n', '').length
+        )}'
+      var whatsAppButton = new WhatsAppButton({
+        phoneNumber: '${whatsAppPhoneNumber}',
+        title: '${title}',
+        primaryColor: '${primaryColor}',
+        firstMessage: '${whatsAppFirstMessage}',
+        webhookUrl: '${webhookUrl}',
+        ctaText: '${callToActionText}',
+        htmlContent: '${htmlContent.replaceAll('\n', '')}',
+        cssContent: cssContent1 + cssContent2,
+      })
       whatsAppButton.init()
     </script>
   `
