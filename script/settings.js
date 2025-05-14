@@ -128,8 +128,8 @@ async function generateWidgetCode(e) {
         '${callToActionText}',
         '${primaryColor}',
         '${title}',
-        '${htmlContent}',
-        '${cssContent}'
+        '${htmlContent.replaceAll('\n', '')}',
+        '${cssContent.replaceAll('\n', '')}',
       )
       whatsAppButton.init()
     </script>

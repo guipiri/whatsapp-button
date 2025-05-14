@@ -1,7 +1,7 @@
-export default class WhatsAppButton {
+class WhatsAppButton {
   constructor(
-    whatsAppPhoneNumber,
-    whatsAppFirstMessage,
+    phoneNumber,
+    firstMessage,
     webhookUrl,
     ctaText,
     primaryColor,
@@ -9,14 +9,21 @@ export default class WhatsAppButton {
     htmlContent,
     cssContent
   ) {
-    this.whatsAppFirstMessage = whatsAppFirstMessage
-    this.whatsAppPhoneNumber = whatsAppPhoneNumber
+    this.firstMessage = firstMessage
+    this.phoneNumber = phoneNumber
     this.webhookUrl = webhookUrl
     this.ctaText = ctaText
     this.primaryColor = primaryColor
     this.title = title
     this.htmlContent = htmlContent
     this.cssContent = cssContent
+  }
+
+  replaceFirstMsgVars(name, email, phone, msg) {
+    return msg
+      .replace('{{name}}', name)
+      .replace('{{email}}', email)
+      .replace('{{phone}}', phone)
   }
 
   toggleShowForm() {
@@ -44,7 +51,7 @@ export default class WhatsAppButton {
     }
   }
 
-  async formSubmit(event, thisObject) {
+  async formSubmit(event) {
     event.preventDefault()
 
     const formButton = document.getElementById('form-button')
@@ -56,17 +63,17 @@ export default class WhatsAppButton {
     const email = form.email.value
     const phone = form.phone.value
 
-    await thisObject.fetchWebhookUrl(name, email, phone)
+    await this.fetchWebhookUrl(name, email, phone)
 
     formButton.removeAttribute('disabled')
     formButton.innerText = 'Conversar'
     form.reset()
 
-    thisObject.toggleShowForm()
+    this.toggleShowForm()
 
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${
-      thisObject.whatsAppPhoneNumber
-    }&text=${thisObject.whatsAppFirstMessage(name, email, phone)}`
+      this.phoneNumber
+    }&text=${this.replaceFirstMsgVars(name, email, phone, this.firstMessage)}`
 
     window.open(whatsappUrl, '_blank')
   }
