@@ -72,6 +72,12 @@ p {
   margin-bottom: 0.5rem;
 }
 
+p a {
+  font-size: 0.9rem;
+  color: #075f55;
+  text-decoration: none;
+}
+
 .settings-buttons {
   background-color: #075f55;
   color: white;

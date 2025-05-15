@@ -86,7 +86,7 @@ class WhatsAppButton {
     await this.fetchWebhookUrl(name, email, phone)
 
     formButton.removeAttribute('disabled')
-    formButton.innerText = 'Conversar'
+    formButton.innerText = this.ctaText
     form.reset()
 
     this.toggleShowForm()

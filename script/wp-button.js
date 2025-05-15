@@ -4,9 +4,9 @@ const { callToActionText, firstMessage, phoneNumber, webhookUrl } = formConfig
 
 function replaceFirstMsgVars(name, email, phone, msg) {
   return msg
-    .replace('{{name}}', name)
-    .replace('{{email}}', email)
-    .replace('{{phone}}', phone)
+    .replace('{name}', name)
+    .replace('{email}', email)
+    .replace('{phone}', phone)
 }
 
 function toggleShowForm() {

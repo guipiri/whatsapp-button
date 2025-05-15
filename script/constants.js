@@ -1,4 +1,4 @@
-export const webhookUrlDefault = 'https://script.google.com/macros/s/AKfycby1E9BQCd5Qh-luovTfTsJk7_zYimoRNHPj4ASW61uyzSMYmbOWywW7j0frPXso1j96/exec'
+export const webhookUrlDefault = 'https://script.google.com/macros/s/AKfycbyjPxc7oyFJmV-HK9Du8e70xe4cv7uyZ0pF34gK46XPK6RYTLdsWGZSnf2v2YKZWNM-qA/exec'
 
 export const firstMessageDefault =
   'Meu nome é {name}, meu e-mail é {email}. Gostaria de informações!'

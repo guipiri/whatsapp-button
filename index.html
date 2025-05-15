@@ -54,9 +54,7 @@
 
         <div>
           <label for="first-message">First message: </label>
-          <p>
-            Acesse nome, telefone e e-mail usando: {name}, {phone} e {email}
-          </p>
+          <p>Access name, phone and email using: {name}, {phone} e {email}</p>
           <textarea
             class="form-config"
             type="text"
@@ -70,11 +68,19 @@ Olá, meu nome é {name} e gostaria de informações!</textarea
 
         <div>
           <label for="webhook-url">Webhook URL: </label>
+          <p>
+            Use default value to see data integration in
+            <a
+              href="https://docs.google.com/spreadsheets/d/1_VI061E5_CGytoQw4Lx1POglhKE0lxkFpbFQgbagXs4/edit?gid=0#gid=0"
+            >
+              this Google Sheets example.
+            </a>
+          </p>
           <input
             class="form-config"
             type="url"
             id="webhook-url"
-            value="https://script.google.com/macros/s/AKfycby1E9BQCd5Qh-luovTfTsJk7_zYimoRNHPj4ASW61uyzSMYmbOWywW7j0frPXso1j96/exec"
+            value="https://script.google.com/macros/s/AKfycbyjPxc7oyFJmV-HK9Du8e70xe4cv7uyZ0pF34gK46XPK6RYTLdsWGZSnf2v2YKZWNM-qA/exec"
             name="webhookUrl"
           />
         </div>
