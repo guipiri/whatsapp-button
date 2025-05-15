@@ -1,9 +1,6 @@
-import {
-  webhookUrl,
-  whatsAppFirstMessage,
-  whatsAppPhoneNumber,
-  callToActionText,
-} from './settings.js'
+import formConfig from './settings.js'
+
+const { callToActionText, firstMessage, phoneNumber, webhookUrl } = formConfig
 
 function replaceFirstMsgVars(name, email, phone, msg) {
   return msg
@@ -57,11 +54,11 @@ async function formSubmit(e) {
 
   toggleShowForm()
 
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsAppPhoneNumber}&text=${replaceFirstMsgVars(
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${replaceFirstMsgVars(
     name,
     email,
     phone,
-    whatsAppFirstMessage
+    firstMessage
   )}`
 
   window.open(whatsappUrl, '_blank')

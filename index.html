@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="WhatsApp Button Form" />
     <meta name="keywords" content="WhatsApp, Button, Form" />
-    <link rel="stylesheet" href="./style/wp-button.css" />
+    <link
+      rel="stylesheet"
+      title="wp-button-style"
+      href="./style/wp-button.css"
+    />
     <link rel="stylesheet" href="./style/settings.css" />
     <title>WhatsApp Button Form</title>
   </head>
@@ -14,22 +18,37 @@
       <form id="settings-form">
         <div>
           <label for="primary-color">Primary color: </label>
-          <input id="primary-color" type="color" value="#075f55" />
+          <input
+            class="form-config"
+            id="primary-color"
+            type="color"
+            value="#075f55"
+            name="primaryColor"
+          />
         </div>
 
         <div>
           <label for="title">Title: </label>
-          <input type="text" id="title" value="Fale Conosco" maxlength="30" />
+          <input
+            class="form-config"
+            type="text"
+            id="title"
+            value="Fale Conosco"
+            maxlength="30"
+            name="title"
+          />
         </div>
 
         <div>
           <label for="wp-number">To Number: </label>
           <input
+            class="form-config"
             type="number"
             id="wp-number"
             value="5516999999999"
             pattern="[0-9]{13}"
             placeholder="Ex: 5511991627572"
+            name="phoneNumber"
           />
         </div>
 
@@ -38,7 +57,13 @@
           <p>
             Acesse nome, telefone e e-mail usando: {name}, {phone} e {email}
           </p>
-          <textarea type="text" id="first-message" rows="4" cols="50">
+          <textarea
+            class="form-config"
+            type="text"
+            id="first-message"
+            rows="4"
+            cols="50"
+          >
 Olá, meu nome é {name} e gostaria de informações!</textarea
           >
         </div>
@@ -46,15 +71,24 @@ Olá, meu nome é {name} e gostaria de informações!</textarea
         <div>
           <label for="webhook-url">Webhook URL: </label>
           <input
+            class="form-config"
             type="url"
             id="webhook-url"
             value="https://script.google.com/macros/s/AKfycby1E9BQCd5Qh-luovTfTsJk7_zYimoRNHPj4ASW61uyzSMYmbOWywW7j0frPXso1j96/exec"
+            name="webhookUrl"
           />
         </div>
 
         <div>
           <label for="cta">Call-to-action:</label>
-          <input type="text" id="cta" value="Conversar" maxlength="20" />
+          <input
+            class="form-config"
+            type="text"
+            id="cta"
+            value="Conversar"
+            maxlength="20"
+            name="callToActionText"
+          />
         </div>
 
         <button id="reset-styles" class="settings-buttons">
@@ -118,8 +152,6 @@ Olá, meu nome é {name} e gostaria de informações!</textarea
       </button>
     </div>
 
-    <script type="module" src="./script/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/source-map@0.7.3/dist/source-map.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/terser/dist/bundle.min.js"></script>
+    <script type="module" src="./script/wp-button.js"></script>
   </body>
 </html>
