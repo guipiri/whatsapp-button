@@ -91,21 +91,21 @@ You can send form data through a webhook url. When the form is submitted, we fet
 
 4.  In Project Settings, add any [GCP](https://console.cloud.google.com/) project number in `Google Cloud Platform (GCP) Project` section. Also there, enable the `Show "appsscript.json" manifest file in editor` option.
 
-5.  In Editor, click `appsscript.json` file and add to the json the `oauthScopes` property with the value `[
-  "https://www.googleapis.com/auth/spreadsheets"
-]`. Example:
+5.  In Editor, click `appsscript.json` file and add to the json the `oauthScopes` property with the value `["https://www.googleapis.com/auth/spreadsheets"]`. Example:
 
-        ```json
-        {
-            "timeZone": "America/Sao_Paulo",
-            "dependencies": {},
-            "exceptionLogging": "STACKDRIVER",
-            "runtimeVersion": "V8",
-            "oauthScopes": ["https://www.googleapis.com/auth/spreadsheets"]
-        }
-        ```
+    ```json
+    {
+      "timeZone": "America/Sao_Paulo",
+      "dependencies": {},
+      "exceptionLogging": "STACKDRIVER",
+      "runtimeVersion": "V8",
+      "oauthScopes": ["https://www.googleapis.com/auth/spreadsheets"]
+    }
+    ```
 
 6.  Click `Deploy > New deployment`, select `Web app` type. Set `Execute as` to `Me` and `Who has access to the app` to `Anyone`. Click `Deploy`.
+
+7.  Copy the Web App URL and paste it in the `Webhook URL` option in the WhatsApp Button Widget Generator.
 
 ## Contributing
 
@@ -118,54 +118,3 @@ You can send form data through a webhook url. When the form is submitted, we fet
 ## Contact
 
 If you have any questions or suggestions, please feel free to contact me at my [email](mailto:gui.soliveiras@gmail.com).
-
-<style>
-.copy-code-button {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    padding: 3px 8px;
-    font-size: 12px;
-    background-color: #f1f1f1;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    display: none;
-}
-
-.code-block-container {
-    position: relative;
-}
-
-.code-block-container:hover .copy-code-button {
-    display: block;
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Wrap all code blocks in a container
-    document.querySelectorAll('pre code').forEach(function(codeBlock) {
-        const container = document.createElement('div');
-        container.className = 'code-block-container';
-        
-        const button = document.createElement('button');
-        button.className = 'copy-code-button';
-        button.textContent = 'Copy';
-        
-        codeBlock.parentNode.insertBefore(container, codeBlock);
-        container.appendChild(codeBlock.parentNode);
-        container.appendChild(button);
-        
-        button.addEventListener('click', function() {
-            const code = codeBlock.textContent;
-            navigator.clipboard.writeText(code).then(function() {
-                button.textContent = 'Copied!';
-                setTimeout(function() {
-                    button.textContent = 'Copy';
-                }, 2000);
-            });
-        });
-    });
-});
-</script>
