@@ -12,7 +12,7 @@ A simple and customizable WhatsApp button widget generator with form integrated.
 
 ## Installation
 
-1. Generate your custom code through the [WhatsApp Button Widget Generator](https://whatsapp-button.pages.dev). See your preview on the side of the same page.
+1. Generate your custom code through the <a href="https://whatsapp-button.pages.dev" target="_blank">WhatsApp Button Widget Generator</a>. See your preview on the side of the same page.
 
 2. Copy the generated code and paste it into your HTML file before the closing `</body>` tag. For example:
 
