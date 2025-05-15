@@ -4,7 +4,7 @@ A simple and customizable WhatsApp button widget generator with form integrated.
 
 ## Features
 
-- Easy to implement WhatsApp chat button
+- Easy to implement WhatsApp button
 - Basic customizable button and form styles
 - Form integration for collecting user information
 - Mobile-friendly and responsive design
