@@ -1,13 +1,26 @@
+const webhookUrlDefault =
+  'https://script.google.com/macros/s/AKfycbyjPxc7oyFJmV-HK9Du8e70xe4cv7uyZ0pF34gK46XPK6RYTLdsWGZSnf2v2YKZWNM-qA/exec'
+
+const firstMessageDefault =
+  'Meu nome é {name}, meu e-mail é {email}. Gostaria de informações!'
+
+const phoneNumberDefault = '5511999999999'
+
+const callToActionTextDefault = 'Conversar'
+
+const titleDefault = 'Fale Conosco'
+
+const primaryColorDefault = '#075f55'
+
 class WhatsAppButton {
   constructor({
-    phoneNumber,
-    firstMessage,
-    webhookUrl,
-    ctaText,
-    primaryColor,
-    title,
-    htmlContent,
-    cssContent,
+    phoneNumber = phoneNumberDefault,
+    firstMessage = firstMessageDefault,
+    webhookUrl = webhookUrlDefault,
+    ctaText = callToActionTextDefault,
+    primaryColor = primaryColorDefault,
+    title = titleDefault,
+    startOpened = false,
   }) {
     this.firstMessage = firstMessage
     this.phoneNumber = phoneNumber
@@ -15,21 +28,223 @@ class WhatsAppButton {
     this.ctaText = ctaText
     this.primaryColor = primaryColor
     this.title = title
-    this.htmlContent = htmlContent
-    this.cssContent = cssContent
+    this.startOpened = startOpened
   }
 
-  baseHtml = `
-  <!DOCTYPE html>
-  <html lang="pt-BR">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>WhatsApp Button</title>
-    </head>
-    <body></body>
-  </html>
-`
+  generateHtmlContent() {
+    return `
+      <!DOCTYPE html>
+      <html lang="pt-BR">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>WhatsApp Button</title>
+        </head>
+        <body>
+          <div class="whatsapp-container">
+            <div id="form-container" class="${this.startOpened ? '' : 'none'}">
+              <header class="form-header">
+                <h4>${this.title}</h4>
+                <div class="close-icon"></div>
+              </header>
+              <div class="form">
+                <form id="whatsapp-form">
+                  <div class="form-field">
+                    <input
+                      placeholder="Nome"
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
+                    />
+                  </div>
+                  <div class="form-field">
+                    <input
+                      placeholder="E-mail"
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                    />
+                  </div>
+                  <div class="form-field">
+                    <input
+                      placeholder="Número do WhatsApp"
+                      type="number"
+                      id="phone"
+                      name="phone"
+                      required
+                    />
+                  </div>
+                  <button id="form-button" type="submit">${
+                    this.ctaText
+                  }</button>
+                </form>
+              </div>
+            </div>
+            <button class="whatsapp-button">
+              <img
+                src="https://pub-fab99594a03b41c38db0d04b26923694.r2.dev/wp-bt.svg"
+                alt="WhatsApp Icon"
+                width="60"
+                height="60"
+              />
+            </button>
+          </div>
+        </body>
+      </html> 
+    `
+  }
+
+  generateCSSContent() {
+    return `
+      .whatsapp-container * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Matter', sans-serif;
+        font-size: 16px;
+      }
+
+      :root {
+        --primary-color: ${this.primaryColor};
+        --secondary-color: #25d366;
+      }
+
+      body {
+        background-color: transparent;
+        height: 100vh;
+      }
+
+      .whatsapp-button {
+        text-decoration: none;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        display: block;
+        margin-left: auto;
+        margin-top: 1rem;
+      }
+
+      .whatsapp-button:hover {
+        transform: scale(1.1);
+        transition: all 0.3s ease;
+      }
+
+      .whatsapp-container {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+      }
+
+      .form-header {
+        background-color: var(--primary-color);
+        color: #fff;
+        padding: 1rem 2rem;
+        border-radius: 1rem 1rem 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .none {
+        display: none;
+      }
+
+      #form-container {
+        opacity: 0; /* Inicia invisível */
+        transform: translateY(-20px); /* Sai um pouco para cima */
+        transition: opacity 0.5s, transform 0.5s;
+        animation: aparecer 1s forwards;
+        margin-left: 20px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        border-radius: 1rem;
+      }
+
+      @keyframes aparecer {
+        from {
+          opacity: 0; /* Início invisível */
+          transform: translateY(-20px); /* Sai um pouco para cima */
+        }
+        to {
+          opacity: 1; /* Totalmente visível */
+          transform: translateY(0); /* Posição final */
+        }
+      }
+
+      .form {
+        padding: 1.5rem;
+        background-image: url(https://pub-fab99594a03b41c38db0d04b26923694.r2.dev/wp-bg.jpeg);
+        border-radius: 0 0 1rem 1rem;
+      }
+
+      .form-field input {
+        width: 100%;
+        padding: 0.6rem 0.8rem;
+        border-radius: 0.5rem;
+        border: none;
+        margin-bottom: 1.5rem;
+        outline: none;
+      }
+
+      input[type='number']::-webkit-inner-spin-button,
+      input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0;
+      }
+
+      #form-button {
+        background-color: var(--primary-color);
+        color: #fff;
+        border: none;
+        padding: 0.8rem 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.1s ease;
+        display: block;
+        width: 100%;
+        transition: all 0.3s ease;
+      }
+
+      #form-button:hover {
+        background-color: color-mix(
+          in oklab,
+          var(--primary-color) 80%,
+          rgb(0, 0, 0) 20%
+        );
+      }
+
+      .close-icon {
+        position: relative;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        margin-left: 1rem;
+      }
+
+      .close-icon::before,
+      .close-icon::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 2px;
+        height: 24px;
+        background-color: #ffffff;
+        transform-origin: center;
+      }
+
+      .close-icon::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      .close-icon::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+    `
+  }
 
   replaceFirstMsgVars(name, email, phone, msg) {
     return msg
@@ -101,15 +316,11 @@ class WhatsAppButton {
 
   toggleIframeSize() {
     const openedWidth = '20rem'
-    const openedHeight = '29.2rem'
-    const closedWidthAndHeight = '6rem'
 
     if (this.iframe.style.width === openedWidth) {
-      this.iframe.style.width = closedWidthAndHeight
-      this.iframe.style.height = closedWidthAndHeight
+      this.setClosedSize()
     } else {
-      this.iframe.style.width = openedWidth
-      this.iframe.style.height = openedHeight
+      this.setOpenedSize()
     }
   }
 
@@ -120,26 +331,45 @@ class WhatsAppButton {
     this.iframe.style.height = openedHeight
   }
 
-  init() {
+  setClosedSize() {
+    const closedWidthAndHeight = '6rem'
+    this.iframe.style.width = closedWidthAndHeight
+    this.iframe.style.height = closedWidthAndHeight
+  }
+
+  setIframeInitialStyle() {
+    this.iframe.style.border = 'none'
+    this.iframe.style.position = 'fixed'
+    this.iframe.style.bottom = '0'
+    this.iframe.style.right = '0'
+    this.iframe.id = 'whatsapp-button-this.iframe'
+    this.iframe.style.zIndex = '99999'
+
+    if (this.startOpened) {
+      this.setOpenedSize()
+    } else {
+      this.setClosedSize()
+    }
+  }
+
+  createIframeDoc() {
     const iframe = document.createElement('iframe')
-    iframe.style.border = 'none'
-    iframe.style.position = 'fixed'
-    iframe.style.width = '6rem'
-    iframe.style.height = '6rem'
-    iframe.style.bottom = '0'
-    iframe.style.right = '0'
-    iframe.id = 'whatsapp-button-iframe'
-    iframe.style.zIndex = '99999'
+    this.iframe = iframe
 
     document.body.appendChild(iframe)
-
-    // Define o iframe e o iframeDoc na classe WhatsAppButton
-    this.iframe = iframe
     this.iframeDoc = iframe.contentDocument || iframe.contentWindow.document
+  }
+
+  init() {
+    // Cria e define o iframe e o iframeDoc na classe WhatsAppButton
+    this.createIframeDoc()
+
+    // Define o estilo inicial do iframe
+    this.setIframeInitialStyle()
 
     // Listen to the message event from the parent window to open the forms
-    iframe.onload = () => {
-      iframe.contentWindow.onmessage = (event) => {
+    this.iframe.onload = () => {
+      this.iframe.contentWindow.onmessage = (event) => {
         console.log(this)
         if (event.data === 'open-whatsapp-forms') {
           this.showForm()
@@ -147,17 +377,14 @@ class WhatsAppButton {
       }
     }
 
-    // Insere o base html dentro do iframe
+    // Insere o html dentro do iframe
     this.iframeDoc.open()
-    this.iframeDoc.writeln(this.baseHtml)
+    this.iframeDoc.writeln(this.generateHtmlContent())
     this.iframeDoc.close()
-
-    // Insere o htmlContent dentro do iframe
-    this.iframeDoc.body.innerHTML = this.htmlContent
 
     // Insere o CSS no iframe
     const style = this.iframeDoc.createElement('style')
-    style.textContent = this.cssContent
+    style.textContent = this.generateCSSContent()
     this.iframeDoc.head.appendChild(style)
 
     // Adiciona os eventos de click e submit dentro do iframe
