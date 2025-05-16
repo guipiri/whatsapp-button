@@ -30,6 +30,10 @@ body {
   color: #333;
 }
 
+.none {
+  display: none;
+}
+
 input#title,
 input#webhook-url,
 input#wp-number,

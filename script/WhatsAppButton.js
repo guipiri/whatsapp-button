@@ -6,22 +6,32 @@ const firstMessageDefault =
 
 const phoneNumberDefault = '5511999999999'
 
-const callToActionTextDefault = 'Conversar'
+const ctaTextDefault = 'Conversar'
 
 const titleDefault = 'Fale Conosco'
 
 const primaryColorDefault = '#075f55'
 
-class WhatsAppButton {
+const formConfigDefaultt = {
+  phoneNumber: phoneNumberDefault,
+  title: titleDefault,
+  primaryColor: primaryColorDefault,
+  firstMessage: firstMessageDefault,
+  webhookUrl: webhookUrlDefault,
+  ctaText: ctaTextDefault,
+  startOpened: false,
+}
+
+export default class WhatsAppButton {
   constructor({
-    phoneNumber = phoneNumberDefault,
-    firstMessage = firstMessageDefault,
-    webhookUrl = webhookUrlDefault,
-    ctaText = callToActionTextDefault,
-    primaryColor = primaryColorDefault,
-    title = titleDefault,
-    startOpened = false,
-  }) {
+    phoneNumber,
+    firstMessage,
+    webhookUrl,
+    ctaText,
+    primaryColor,
+    title,
+    startOpened,
+  } = formConfigDefaultt) {
     this.firstMessage = firstMessage
     this.phoneNumber = phoneNumber
     this.webhookUrl = webhookUrl
@@ -29,6 +39,8 @@ class WhatsAppButton {
     this.primaryColor = primaryColor
     this.title = title
     this.startOpened = startOpened
+
+    this.init()
   }
 
   generateHtmlContent() {
@@ -346,7 +358,6 @@ class WhatsAppButton {
     this.iframe.style.position = 'fixed'
     this.iframe.style.bottom = '0'
     this.iframe.style.right = '0'
-    this.iframe.id = 'whatsapp-button-this.iframe'
     this.iframe.style.zIndex = '99999'
 
     if (this.startOpened) {
@@ -358,6 +369,7 @@ class WhatsAppButton {
 
   createIframeDoc() {
     const iframe = document.createElement('iframe')
+    iframe.id = 'whatsapp-button-iframe'
     this.iframe = iframe
 
     document.body.appendChild(iframe)
@@ -408,5 +420,9 @@ class WhatsAppButton {
     if (closeXButton) {
       closeXButton.addEventListener('click', () => this.toggleShowForm())
     }
+  }
+
+  remove() {
+    this.iframe.remove()
   }
 }

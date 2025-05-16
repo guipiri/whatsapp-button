@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="WhatsApp Button Form" />
     <meta name="keywords" content="WhatsApp, Button, Form" />
-    <link
-      rel="stylesheet"
-      title="wp-button-style"
-      href="./style/wp-button.css"
-    />
     <link rel="stylesheet" href="./style/settings.css" />
     <title>WhatsApp Button Form</title>
   </head>
@@ -57,6 +52,7 @@
           <p>Access name, phone and email using: {name}, {phone} e {email}</p>
           <textarea
             class="form-config"
+            name="firstMessage"
             type="text"
             id="first-message"
             rows="4"
@@ -93,7 +89,17 @@ Olá, meu nome é {name} e gostaria de informações!</textarea
             id="cta"
             value="Conversar"
             maxlength="20"
-            name="callToActionText"
+            name="ctaText"
+          />
+        </div>
+
+        <div>
+          <label for="start-opened">Start opened</label>
+          <input
+            type="checkbox"
+            id="start-opened"
+            name="startOpened"
+            class="form-config"
           />
         </div>
 
@@ -109,55 +115,6 @@ Olá, meu nome é {name} e gostaria de informações!</textarea
       </div>
     </div>
 
-    <div class="whatsapp-container">
-      <div id="form-container" class="none">
-        <header class="form-header">
-          <h4>Fale Conosco</h4>
-          <div class="close-icon"></div>
-        </header>
-        <div class="form">
-          <form id="whatsapp-form">
-            <div class="form-field">
-              <input
-                placeholder="Nome"
-                type="text"
-                id="name"
-                name="name"
-                required
-              />
-            </div>
-            <div class="form-field">
-              <input
-                placeholder="E-mail"
-                type="email"
-                id="email"
-                name="email"
-                required
-              />
-            </div>
-            <div class="form-field">
-              <input
-                placeholder="Número do WhatsApp"
-                type="number"
-                id="phone"
-                name="phone"
-                required
-              />
-            </div>
-            <button id="form-button" type="submit">Conversar</button>
-          </form>
-        </div>
-      </div>
-      <button class="whatsapp-button">
-        <img
-          src="https://pub-fab99594a03b41c38db0d04b26923694.r2.dev/wp-bt.svg"
-          alt="WhatsApp Icon"
-          width="60"
-          height="60"
-        />
-      </button>
-    </div>
-
-    <script type="module" src="./script/wp-button.js"></script>
+    <script type="module" src="./script/settings.js"></script>
   </body>
 </html>
