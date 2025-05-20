@@ -1,25 +1,39 @@
-const webhookUrlDefault =
+export const webhookUrlDefault =
   'https://script.google.com/macros/s/AKfycbyjPxc7oyFJmV-HK9Du8e70xe4cv7uyZ0pF34gK46XPK6RYTLdsWGZSnf2v2YKZWNM-qA/exec'
 
-const firstMessageDefault =
+export const firstMessageDefault =
   'Meu nome é {name}, meu e-mail é {email}. Gostaria de informações!'
 
-const phoneNumberDefault = '5511999999999'
+export const phoneNumberDefault = '5511999999999'
 
-const ctaTextDefault = 'Conversar'
+export const ctaTextDefault = 'Conversar'
 
-const titleDefault = 'Fale Conosco'
+export const titleDefault = 'Fale Conosco'
 
-const primaryColorDefault = '#075f55'
+export const primaryColorDefault = '#075f55'
+
+export const startOpenedDefault = false
+
+export const fieldsDefault = [
+  { name: 'name', placeholder: 'Nome', type: 'text', required: true },
+  { name: 'email', placeholder: 'E-mail', type: 'email', required: true },
+  {
+    name: 'phone',
+    placeholder: 'Número do WhatsApp',
+    type: 'number',
+    required: true,
+  },
+]
 
 const formConfigDefaultt = {
-  phoneNumber: phoneNumberDefault,
-  title: titleDefault,
-  primaryColor: primaryColorDefault,
-  firstMessage: firstMessageDefault,
   webhookUrl: webhookUrlDefault,
+  firstMessage: firstMessageDefault,
+  phoneNumber: phoneNumberDefault,
   ctaText: ctaTextDefault,
-  startOpened: false,
+  primaryColor: primaryColorDefault,
+  title: titleDefault,
+  startOpened: startOpenedDefault,
+  fields: fieldsDefault,
 }
 
 export default class WhatsAppButton {
@@ -31,14 +45,16 @@ export default class WhatsAppButton {
     primaryColor,
     title,
     startOpened,
+    fields,
   } = formConfigDefaultt) {
-    this.firstMessage = firstMessage
-    this.phoneNumber = phoneNumber
-    this.webhookUrl = webhookUrl
-    this.ctaText = ctaText
-    this.primaryColor = primaryColor
-    this.title = title
-    this.startOpened = startOpened
+    this.firstMessage = firstMessage || firstMessageDefault
+    this.phoneNumber = phoneNumber || phoneNumberDefault
+    this.webhookUrl = webhookUrl || webhookUrlDefault
+    this.ctaText = ctaText || ctaTextDefault
+    this.primaryColor = primaryColor || primaryColorDefault
+    this.title = title || titleDefault
+    this.startOpened = startOpened || startOpenedDefault
+    this.fields = fields || fieldsDefault
 
     this.init()
   }
@@ -61,33 +77,7 @@ export default class WhatsAppButton {
             </header>
             <div class="form">
               <form id="whatsapp-form">
-                <div class="form-field">
-                  <input
-                    placeholder="Nome"
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                  />
-                </div>
-                <div class="form-field">
-                  <input
-                    placeholder="E-mail"
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                  />
-                </div>
-                <div class="form-field">
-                  <input
-                    placeholder="Número do WhatsApp"
-                    type="number"
-                    id="phone"
-                    name="phone"
-                    required
-                  />
-                </div>
+                ${this.createInputFields(this.fields)}
                 <button id="form-button" type="submit">${this.ctaText}</button>
               </form>
             </div>
@@ -254,6 +244,23 @@ export default class WhatsAppButton {
       transform: translate(-50%, -50%) rotate(-45deg);
     }
     `
+  }
+
+  createInputFields(fields) {
+    const htmlFields = fields.reduce((acc, field) => {
+      return ` ${acc}
+        <div class="form-field">
+          <input
+            placeholder="${field.placeholder}"
+            type="${field.type}"
+            id="${field.name}"
+            name="${field.name}"
+            ${field.required && 'required'}
+          />
+        </div>`
+    }, '')
+
+    return htmlFields
   }
 
   replaceFirstMsgVars(name, email, phone, msg) {
