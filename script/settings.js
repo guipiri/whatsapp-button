@@ -1,3 +1,4 @@
+import { formFields } from './formFields.js'
 import {
   ctaTextDefault,
   firstMessageDefault,
@@ -9,63 +10,106 @@ import {
   fieldsDefault,
 } from './WhatsAppButton.js'
 import WhatsAppButton from './WhatsAppButton.js'
-import { formFields } from './formFields.js'
 
-const formConfig = {
-  phoneNumber: phoneNumberDefault,
-  title: titleDefault,
-  primaryColor: primaryColorDefault,
-  firstMessage: firstMessageDefault,
-  webhookUrl: webhookUrlDefault,
-  ctaText: ctaTextDefault,
-  startOpened: startOpenedDefault,
-  fields: fieldsDefault,
-}
-
-function setFormConfig(e) {
-  const { name: fieldName, value, type } = e.target
-
-  if (type === 'checkbox') {
-    formConfig.startOpened = e.target.checked
-    return
+class WidgetConfig {
+  constructor(widgetConfig) {
+    this.phoneNumber = widgetConfig?.phoneNumber ?? phoneNumberDefault
+    this.title = widgetConfig?.title ?? titleDefault
+    this.primaryColor = widgetConfig?.primaryColor ?? primaryColorDefault
+    this.firstMessage = widgetConfig?.firstMessage ?? firstMessageDefault
+    this.webhookUrl = widgetConfig?.webhookUrl ?? webhookUrlDefault
+    this.ctaText = widgetConfig?.ctaText ?? ctaTextDefault
+    this.startOpened = widgetConfig?.startOpened ?? startOpenedDefault
+    this.fields = widgetConfig?.fields ?? fieldsDefault
   }
 
-  formConfig[fieldName] = value
+  addField(field, placeholder) {
+    if (!this.fields) {
+      this.fields = []
+    }
+
+    if (!formFields[field]) {
+      throw new Error('This field does not exist')
+    }
+
+    if (this.fields.length === 5) {
+      throw new Error('You can only add 5 fields')
+    }
+
+    if (this.fields.find((f) => f.name === field)) {
+      throw new Error('This field already exists')
+    }
+
+    this.fields.push({ ...formFields[field], placeholder })
+    this.callListeners()
+  }
+
+  removeField(field) {
+    if (!this.fields || this.fields.length === 1)
+      throw new Error('You need at least one field')
+
+    this.fields = this.fields.filter((f) => f.name !== field)
+    this.callListeners()
+  }
+
+  set(fieldName, value) {
+    this[fieldName] = value
+    this.callListeners()
+  }
+
+  setListener(callback) {
+    if (!this.globalListener) {
+      this.globalListener = []
+    }
+    this.globalListener.push(callback)
+  }
+
+  callListeners() {
+    console.log('listeners called')
+
+    if (!this.globalListener) {
+      return
+    }
+
+    for (const listener of this.globalListener) {
+      listener()
+    }
+  }
 }
 
-function createNewButton(formConfig) {
-  new WhatsAppButton(formConfig)
+const widgetConfig = new WidgetConfig()
+
+widgetConfig.setListener(() => {
+  deleteWidget()
+  createNewWidget(widgetConfig)
+})
+
+function createNewWidget(widgetConfig) {
+  console.log(widgetConfig)
+
+  new WhatsAppButton(widgetConfig)
 }
 
-function deleteButton() {
+function deleteWidget() {
   document.querySelector('#whatsapp-button-iframe').remove()
 }
 
-function addListenersToFormConfigFields() {
-  const formConfigFields = document.querySelectorAll('.form-config')
-  for (const field of formConfigFields) {
-    field.addEventListener('input', (e) => {
-      setFormConfig(e)
-      deleteButton()
-      createNewButton(formConfig)
-    })
+function setWidgetConfig(e) {
+  const { name: fieldName, value, type } = e.target
+
+  if (type === 'checkbox') {
+    widgetConfig.set('startOpened', e.target.checked)
+    return
   }
+
+  widgetConfig.set(fieldName, value)
 }
 
-function resetWpButtonStyles(e) {
-  e.preventDefault()
-  e.stopPropagation()
-
-  deleteButton()
-  createNewButton()
-
-  document.getElementById('settings-form').reset()
-}
-
-function addListenerToResetStylesButton() {
-  document
-    .getElementById('reset-styles')
-    .addEventListener('click', resetWpButtonStyles)
+function addListenersToWidgetConfigFields() {
+  const widgetConfigFields = document.querySelectorAll('.form-config')
+  for (const field of widgetConfigFields) {
+    field.addEventListener('input', setWidgetConfig)
+  }
 }
 
 async function generateWidgetCode(e) {
@@ -73,14 +117,14 @@ async function generateWidgetCode(e) {
   e.stopPropagation()
 
   const {
-    callToActionText,
+    ctaText,
     firstMessage,
     phoneNumber,
     primaryColor,
     title,
     webhookUrl,
     startOpened,
-  } = formConfig
+  } = widgetConfig
 
   const code = `
     <script type='text/javascript' src="./script/WhatsAppButton.js"></script>
@@ -91,8 +135,9 @@ async function generateWidgetCode(e) {
         primaryColor: '${primaryColor}',
         firstMessage: '${firstMessage}',
         webhookUrl: '${webhookUrl}',
-        ctaText: '${callToActionText}',
+        ctaText: '${ctaText}',
         startOpened: ${startOpened},
+        fields: ${JSON.stringify(widgetConfig.fields)},
       })
     </script>
   `
@@ -111,101 +156,110 @@ function addListenerToGenerateCodeButton() {
     .addEventListener('click', generateWidgetCode)
 }
 
-;(function addListeners() {
-  addListenersToFormConfigFields()
+function resetDefaults() {
+  window.location.reload()
+}
 
-  addListenerToResetStylesButton()
+function addListenerToResetDefaultButton() {
+  document
+    .getElementById('reset-defaults')
+    .addEventListener('click', resetDefaults)
+}
 
-  addListenerToGenerateCodeButton()
+function addListenerToRemoveFieldBtn(fieldName) {
+  if (!fieldName) {
+    const customFields = document.querySelectorAll('[class^="remove-field-"]')
 
-  new WhatsAppButton(formConfig)
-})()
-
-const addFieldBtn = document.getElementById('add-field')
-const fieldType = document.getElementById('field-type')
-const fieldPlaceholder = document.getElementById('field-placeholder')
-const fieldList = document.getElementById('custom-fields-list')
-
-let fieldsCounter = 2
-
-addFieldBtn.addEventListener('click', () => {
-  addField()
-  fieldPlaceholder.value = ''
-})
-
-function addField() {
-  fieldsCounter++
-
-  const type = fieldType.options[fieldType.selectedIndex].text
-
-  const name = fieldType.value
-
-  const placeholder = fieldPlaceholder.value.trim()
-
-  if (!placeholder) {
-    alert('Por favor, preencha o placeholder.')
+    for (const field of customFields) {
+      field.addEventListener('click', () => {
+        const fieldName = field.classList[0].split('-')[2]
+        try {
+          widgetConfig.removeField(fieldName)
+          field.parentElement.remove()
+        } catch (error) {
+          alert(error.message)
+        }
+      })
+    }
     return
   }
 
-  const li = document.createElement('li')
+  const removeFieldBtn = document.querySelector(`.remove-field-${fieldName}`)
 
-  li.innerHTML = `
-      <span><strong>${type}</strong></span>
-      <span>${placeholder}</span>
-      <span class="custom-field-item-${fieldsCounter}">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          x="0px"
-          y="0px"
-          width="1.5rem"
-          height="1.5rem"
-          viewBox="0 0 24 24"
-        >
-          <path
-            d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"
-          ></path>
-        </svg>
-      </span>
-    `
-
-  fieldList.appendChild(li)
-  console.log(
-    document.getElementsByClassName(`custom-field-item-${fieldsCounter}`)[0]
-  )
-
-  document
-    .getElementsByClassName(`custom-field-item-${fieldsCounter}`)[0]
-    .addEventListener('click', removeField)
-
-  addFieldToFormConfig({
-    name,
-    placeholder,
+  removeFieldBtn.addEventListener('click', () => {
+    try {
+      widgetConfig.removeField(fieldName)
+      removeFieldBtn.parentElement.remove()
+    } catch (error) {
+      alert(error.message)
+    }
   })
 }
 
-function addFieldToFormConfig(field) {
-  const fieldToAdd = formFields[field.name]
-  fieldToAdd.placeholder = field.placeholder
-  formConfig.fields.push(fieldToAdd)
+function resetPLaceholderInput() {
+  document.getElementById('field-placeholder').value = ''
 }
 
-function removeField(e) {
-  console.log(e)
+function addField() {
+  const fieldType = document.getElementById('field-type')
+  const fieldName = fieldType.value
+  const fieldText =
+    document.getElementById('field-type').options[fieldType.selectedIndex].text
+  const fieldPlaceholder = document.getElementById('field-placeholder').value
 
-  const span = e.target.parentElement.parentElement
-  const liToRemove = span.parentElement
-  liToRemove.remove()
-
-  const index = span.classList[0]
-
-  console.log(index)
-
-  const newFields = formConfig.fields.filter((_, i) => i !== index)
-  formConfig.fields = newFields
-  fieldsCounter--
+  try {
+    widgetConfig.addField(fieldName, fieldPlaceholder)
+    addFieldHtml(fieldName, fieldText, fieldPlaceholder)
+    resetPLaceholderInput()
+  } catch (error) {
+    alert(error.message)
+  }
 }
 
-// biome-ignore lint/complexity/noForEach: <explanation>
-document.querySelectorAll('[class^=custom-field-item]').forEach((item) => {
-  item.addEventListener('click', removeField)
-})
+function addFieldHtml(fieldName, fieldText, fieldPlaceholder) {
+  const fieldItem = document.createElement('li')
+  fieldItem.classList.add(`custom-field-${fieldName}`)
+
+  fieldItem.innerHTML = `
+            <span><strong>${fieldText}</strong></span>
+            <span>${fieldPlaceholder}</span>
+              <span class="remove-field-${fieldName}">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  x="0px"
+                  y="0px"
+                  width="1.5rem"
+                  height="1.5rem"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"
+                  ></path>
+                </svg>
+              </span>
+  `
+
+  document.getElementById('custom-fields-list').appendChild(fieldItem)
+
+  addListenerToRemoveFieldBtn(fieldName)
+}
+
+function addListenerToAddFieldBtn() {
+  const addFieldBtn = document.getElementById('add-field')
+
+  addFieldBtn.addEventListener('click', addField)
+}
+
+;(function addListeners() {
+  addListenersToWidgetConfigFields()
+
+  addListenerToGenerateCodeButton()
+
+  addListenerToResetDefaultButton()
+
+  addListenerToRemoveFieldBtn()
+
+  addListenerToAddFieldBtn()
+
+  new WhatsAppButton(widgetConfig)
+})()

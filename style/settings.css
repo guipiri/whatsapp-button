@@ -101,12 +101,12 @@ h4 {
   background-color: #05473f;
 }
 
-button#reset-styles {
+button#reset-defaults {
   background-color: #ccc;
   color: #333;
 }
 
-button#reset-styles:hover {
+button#reset-defaults:hover {
   background-color: #bbb;
 }
 
@@ -178,12 +178,12 @@ button {
   text-align: center;
 }
 
-[class^='custom-field-item-'] > svg {
+[class^='remove-field-'] {
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
-[class^='custom-field-item-']:hover {
+[class^='remove-field-']:hover {
   fill: red;
 }
 

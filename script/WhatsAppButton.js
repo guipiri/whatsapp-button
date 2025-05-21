@@ -107,7 +107,7 @@ export default class WhatsAppButton {
     }
 
     :root {
-      --primary-color: #075f55;
+      --primary-color: ${this.primaryColor};
       --secondary-color: #25d366;
     }
 

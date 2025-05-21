@@ -58,7 +58,7 @@
             rows="4"
             cols="50"
           >
-Olá, meu nome é {name} e gostaria de informações!</textarea
+Meu nome é {name}, meu e-mail é {email}. Gostaria de informações!</textarea
           >
         </div>
         <h3>Add Custom Fields</h3>
@@ -97,59 +97,56 @@ Olá, meu nome é {name} e gostaria de informações!</textarea
             <span class="center"><strong>Placeholder</strong></span>
           </header>
           <ul id="custom-fields-list">
-            <li>
+            <li id="custom-field-name">
               <span><strong>Name</strong></span>
               <span>Nome</span>
-              <span class="custom-field-item-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  x="0px"
-                  y="0px"
-                  width="1.5rem"
-                  height="1.5rem"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"
-                  ></path>
-                </svg>
-              </span>
+              <svg
+                class="remove-field-name"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="1.5rem"
+                height="1.5rem"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"
+                ></path>
+              </svg>
             </li>
-            <li>
+            <li id="custom-field-email">
               <span><strong>Email</strong></span>
               <span>E-mail</span>
-              <span class="custom-field-item-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  x="0px"
-                  y="0px"
-                  width="1.5rem"
-                  height="1.5rem"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"
-                  ></path>
-                </svg>
-              </span>
+              <svg
+                class="remove-field-email"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="1.5rem"
+                height="1.5rem"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"
+                ></path>
+              </svg>
             </li>
-            <li>
+            <li id="custom-field-phone">
               <span><strong>Phone</strong></span>
               <span>Número do WhatsApp</span>
-              <span class="custom-field-item-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  x="0px"
-                  y="0px"
-                  width="1.5rem"
-                  height="1.5rem"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"
-                  ></path>
-                </svg>
-              </span>
+              <svg
+                class="remove-field-phone"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="1.5rem"
+                height="1.5rem"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M 10 2 L 9 3 L 3 3 L 3 5 L 21 5 L 21 3 L 15 3 L 14 2 L 10 2 z M 4.3652344 7 L 6.0683594 22 L 17.931641 22 L 19.634766 7 L 4.3652344 7 z"
+                ></path>
+              </svg>
             </li>
           </ul>
         </div>
@@ -195,7 +192,7 @@ Olá, meu nome é {name} e gostaria de informações!</textarea
           />
         </div>
 
-        <button id="reset-styles" class="settings-buttons">
+        <button id="reset-defaults" class="settings-buttons">
           Reset Defaults
         </button>
         <button id="generate-code" class="settings-buttons">
